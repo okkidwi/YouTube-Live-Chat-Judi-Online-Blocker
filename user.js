@@ -1,13 +1,15 @@
 // ==UserScript==
 // @name         YouTube Live Chat Judi Online Blocker
 // @namespace    javascript
-// @version      1.0
+// @version      1.1
 // @description  Memblokir pesan yang berkaitan dengan promosi judi online (judol) di live stream YouTube
 // @author       Okki Dwi | https://linktr.ee/okkidwi
 // @match        https://www.youtube.com/live_chat*
-// @icon         https://raw.githubusercontent.com/okkidwi/cek-status-data-sptjm-sr-kampus-merdeka/main/images/icon-kampus-merdeka.png
+// @icon         https://raw.githubusercontent.com/okkidwi/YouTube-Live-Chat-Judi-Online-Blocker/refs/heads/main/images/icon-youtube-live-chat-judi-online-blocker.png
 // @license      GNU GPLv3
 // @grant        none
+// @downloadURL https://update.greasyfork.org/scripts/510410/YouTube%20Live%20Chat%20Judi%20Online%20Blocker.user.js
+// @updateURL https://update.greasyfork.org/scripts/510410/YouTube%20Live%20Chat%20Judi%20Online%20Blocker.meta.js
 // ==/UserScript==
 
 (function() {
