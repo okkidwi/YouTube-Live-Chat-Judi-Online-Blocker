@@ -63,6 +63,7 @@
 
 ## 📜 Riwayat Perubahan
 
+- v1.1 - Menambahkan rounded pada tombol fiter
 - v1.0 - Memblokir pesan yang mengandung kata kunci `maxwin`, `jackpot`, `petir`, `zeus`, `kakek`, `gacor`, `wd`, `wede`, `depo`, `web`, `situs`
 
 ## ⭐ Star History
