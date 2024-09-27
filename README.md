@@ -63,7 +63,11 @@
 
 ## 📜 Riwayat Perubahan
 
-- v1.2 - Menambahkan rounded pada tombol fiter
+- v1.3
+   - Memperbarui nama tombol toggle dan menambahkan ikon emoji dengan teks **"🔇 JUDOL : AKTIF"** saat aktif dan **"🔇 JUDOL : NONAKTIF"** saat nonaktif.
+   - Mengubah sedikit posisi tombol toggle ke kanan (koordinat `top: 5px; right: 95px;`) dan dengan border-radius yang lebih bulat yaitu `8px`.
+
+- v1.2
   - Menggunakan tipe `regexp` untuk semua aturan filter.
   - Aturan lebih kompleks dan menyertakan pola regex yang lebih canggih, yang dapat mengenali variasi teks yang lebih rumit seperti: "m+a4+x+w+i+n", "j+a4+c+k+p+o0+t+", "w+e+d+e", serta pola yang mengandung simbol dan angka.
   - Tambahan filter untuk emoji, tanda baca, simbol matematika, dan aksara diakritik.
@@ -75,10 +79,10 @@
   - Menambahkan filter khusus untuk emoji, simbol matematika, dan tanda diakritik, yang tidak ada pada versi 1.1.
 
 - v1.1
- - Menambahkan rounded pada tombol fiter
+ - Menambahkan rounded pada tombol fiter.
  
 - v1.0
- - Memblokir pesan yang mengandung kata kunci `maxwin`, `jackpot`, `petir`, `zeus`, `kakek`, `gacor`, `wd`, `wede`, `depo`, `web`, `situs`
+ - Memblokir pesan yang mengandung kata kunci `maxwin`, `jackpot`, `petir`, `zeus`, `kakek`, `gacor`, `wd`, `wede`, `depo`, `web`, `situs`.
 
 ## ⭐ Star History
 
