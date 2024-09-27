@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         YouTube Live Chat Judi Online Blocker
 // @namespace    javascript
-// @version      1.2
+// @version      1.3
 // @description  Memblokir pesan yang berkaitan dengan promosi judi online (judol) di live stream YouTube
 // @author       Okki Dwi | https://linktr.ee/okkidwi
 // @match        https://www.youtube.com/live_chat*
@@ -37,6 +37,7 @@
         { type: "regexp", text: "t+\\s*[e3]+\\s*r+\\s*p+\\s*[e3]+\\s*r+\\s*c+\\s*[a4]+\\s*y+\\s*[a4]+" },
         { type: "regexp", text: "c+\\s*u+\\s*[a4]+\\s*n+" },
         { type: "regexp", text: "r+\\s*u+\\s*n+\\s*g+\\s*k+\\s*[a4]+\\s*t+" },
+        { type: "regexp", text: "r+\\s*u+\\s*n+\\s*g+\\s*k+\\s*[a4]+\\s*d+" },
         { type: "regexp", text: "s+\\s*l+\\s*[o0]+\\s*t+\\s*[e3]+\\s*r+" },
         { type: "regexp", text: "c+\\s*h+\\s*i+\\s*p+" },
         { type: "regexp", text: "p+\\s*a+\\s*s+\\s*[a4]+\\s*d+" },
@@ -108,18 +109,18 @@
 
     // Fungsi untuk memperbarui tampilan tombol toggle
     const updateToggleButton = (button) => {
-        button.textContent = isActive ? "Filter Judi Online : AKTIF" : "Filter Judi Online : NONAKTIF";
+        button.textContent = isActive ? "🔇 JUDOL : AKTIF" : "🔇 JUDOL : NONAKTIF";
         button.style.backgroundColor = isActive ? "#4CAF50" : "#f44336";
         button.style.cssText += `
             position: absolute;
-            top: 6px;
-            right: 10px;
+            top: 5px;
+            right: 95px;
             z-index: 1000;
             color: white;
             border: none;
             padding: 10px;
             cursor: pointer;
-            border-radius: 10px;
+            border-radius: 8px;
             font-weight: bold;
         `;
     };
