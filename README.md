@@ -63,8 +63,22 @@
 
 ## 📜 Riwayat Perubahan
 
-- v1.1 - Menambahkan rounded pada tombol fiter
-- v1.0 - Memblokir pesan yang mengandung kata kunci `maxwin`, `jackpot`, `petir`, `zeus`, `kakek`, `gacor`, `wd`, `wede`, `depo`, `web`, `situs`
+- v1.2 - Menambahkan rounded pada tombol fiter
+  - Menggunakan tipe `regexp` untuk semua aturan filter.
+  - Aturan lebih kompleks dan menyertakan pola regex yang lebih canggih, yang dapat mengenali variasi teks yang lebih rumit seperti: "m+a4+x+w+i+n", "j+a4+c+k+p+o0+t+", "w+e+d+e", serta pola yang mengandung simbol dan angka.
+  - Tambahan filter untuk emoji, tanda baca, simbol matematika, dan aksara diakritik.
+  - Fungsi `normalizeText` lebih kuat, menambahkan penghapusan karakter non-ASCII menggunakan `replace(/[^\p{ASCII}]/gu, "")` dan tetap menggunakan `replace(/[\u0300-\u036f]/g, "")` untuk menghapus diakritik.
+  - Metode `filterMessages()` menggunakan regex untuk mencocokkan pesan dengan lebih fleksibel terhadap varian teks. Semua aturan menggunakan `new RegExp` untuk mencocokkan pola yang lebih kompleks.
+  - Memiliki fungsi `updateToggleButton()` untuk memperbarui tampilan dan status tombol toggle, dengan tampilan dan fungsi yang lebih terstruktur.
+  - Menambahkan CSS lebih kompleks untuk menangani berbagai elemen, termasuk emoji, simbol, dan karakter non-ASCII.
+  - `MutationObserver` serupa, tetapi lebih dioptimalkan untuk menangani node tambahan dengan filter yang lebih canggih.
+  - Menambahkan filter khusus untuk emoji, simbol matematika, dan tanda diakritik, yang tidak ada pada versi 1.1.
+
+- v1.1
+ - Menambahkan rounded pada tombol fiter
+ 
+- v1.0
+ - Memblokir pesan yang mengandung kata kunci `maxwin`, `jackpot`, `petir`, `zeus`, `kakek`, `gacor`, `wd`, `wede`, `depo`, `web`, `situs`
 
 ## ⭐ Star History
 
