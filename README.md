@@ -6,7 +6,7 @@
 
 <div align="center">
 
-#### Sebuah userscript untuk memblokir pesan yang berkaitan dengan promosi judi online (judol) di live stream YouTube
+#### Sebuah userscript untuk memblokir/menyembunyikan pesan yang berkaitan dengan promosi judi online (judol) di live stream YouTube
 
 [![](https://img.shields.io/badge/Author-okkidwi-green.svg)](https://github.com/okkidwi)
 [![](https://img.shields.io/github/license/okkidwi/YouTube-Live-Chat-Judi-Online-Blocker?color=blue)](https://github.com/okkidwi/YouTube-Live-Chat-Judi-Online-Blocker/blob/main/LICENSE)
@@ -37,52 +37,148 @@
 
 1. Instal ekstensi <a href="https://www.tampermonkey.net/index.php" target="_blank">Tampermonkey</a>
 2. Instal userscript <a href="https://update.greasyfork.org/scripts/510410/YouTube%20Live%20Chat%20Judi%20Online%20Blocker.user.js" target="_blank">YouTube Live Chat Judi Online Blocker</a> (akan dimuat secara otomatis di pengelola skrip pengguna)
-3. Buka website <a href="https://www.youtube.com/" target="_blank">www.youtube.com</a> melalui browser Desktop PC / Laptop berikut:
+3. Buka ekstensi Tampermonkey melalui tombol Ekstensions browser> Klik Dasboard > Klik YouTube Live Chat Judi Online Blocker > Cari bari kode 19 & 20 > Atur filter yang Anda inginkan
+
+https://github.com/user-attachments/assets/54d1fadb-9b17-437f-973c-d5324972dde7
+
+4. Buka website <a href="https://www.youtube.com/" target="_blank">www.youtube.com</a> melalui browser Desktop PC / Laptop berikut:
   * <img style="margin: 0 2px -1px 0" height=16 src="https://favicon-generator.org/favicon-generator/htdocs/favicons/2023-07-04/50a84d541c2f7c791c9c3f9faeafe352.ico.png"> `Windows`: *Chrome / Firefox / Microsoft Edge / Opera / Brave / Vivaldi*
     
   * <img style="margin: 0 2px -1px 0" height=16 src="https://favicon-generator.org/favicon-generator/htdocs/favicons/2023-07-04/afdcf7209fcd4b14fb521ee04f24e676.ico.png"> `macOS`: *Safari*
 4. Pastikan anda telah login akun
 5. Buka live stream yang ingin Anda tonton   
-6. Lihat pada kolom live chat, jika tombol sudah bertuliskan `Filter Judi Online : AKTIF`, pemblokiran pesan promosi yang berkaitan dengan promosi judi online (judol) berstatus AKTIF begitu pula sebaliknya
+6. Lihat pada kolom live chat dan selamat mencoba 😁
 
 <div align="center">
 
 <br>
 
-*Contoh ketika pemblokiran pesan promosi yang berkaitan dengan promosi judi online (judol) berstatus AKTIF</center>*
+<b>*Contoh ketika pesan promosi yang berkaitan dengan promosi judi online (judol) DIBLOKIR</center>*</b>
 
-![image](https://raw.githubusercontent.com/okkidwi/YouTube-Live-Chat-Judi-Online-Blocker/refs/heads/main/images/contoh-blokir-aktif.png)
+![image](https://raw.githubusercontent.com/okkidwi/YouTube-Live-Chat-Judi-Online-Blocker/refs/heads/main/images/contoh-filter-pesan-diblokir.png)
 
 <br>
 
-*Contoh ketika pemblokiran pesan promosi yang berkaitan dengan promosi judi online (judol) berstatus NONAKTIF</center>*
+<b>*Contoh ketika pesan promosi yang berkaitan dengan promosi judi online (judol) DISEMBUNYIKAN</center>*</b>
 
-![image](https://raw.githubusercontent.com/okkidwi/YouTube-Live-Chat-Judi-Online-Blocker/refs/heads/main/images/contoh-blokir-nonaktif.png)
+![image](https://raw.githubusercontent.com/okkidwi/YouTube-Live-Chat-Judi-Online-Blocker/refs/heads/main/images/contoh-filter-pesan-disembunyikan.png)
+
+<br>
+
+<b>*Contoh ketika pesan promosi yang berkaitan dengan promosi judi online (judol) NONAKTIF</center>*</b>
+
+![image](https://raw.githubusercontent.com/okkidwi/YouTube-Live-Chat-Judi-Online-Blocker/refs/heads/main/images/contoh-filter-pesan-nonaktif.png)
 
 </div>
 
 ## 📜 Riwayat Perubahan
 
-- v1.3
-   - Memperbarui nama tombol toggle dan menambahkan ikon emoji dengan teks **"🔇 JUDOL : AKTIF"** saat aktif dan **"🔇 JUDOL : NONAKTIF"** saat nonaktif.
-   - Mengubah sedikit posisi tombol toggle ke kanan (koordinat `top: 5px; right: 95px;`) dan dengan border-radius yang lebih bulat yaitu `8px`.
+### **v1.4**
 
-- v1.2
-  - Menggunakan tipe `regexp` untuk semua aturan filter.
-  - Aturan lebih kompleks dan menyertakan pola regex yang lebih canggih, yang dapat mengenali variasi teks yang lebih rumit seperti: "m+a4+x+w+i+n", "j+a4+c+k+p+o0+t+", "w+e+d+e", serta pola yang mengandung simbol dan angka.
-  - Tambahan filter untuk emoji, tanda baca, simbol matematika, dan aksara diakritik.
-  - Fungsi `normalizeText` lebih kuat, menambahkan penghapusan karakter non-ASCII menggunakan `replace(/[^\p{ASCII}]/gu, "")` dan tetap menggunakan `replace(/[\u0300-\u036f]/g, "")` untuk menghapus diakritik.
-  - Metode `filterMessages()` menggunakan regex untuk mencocokkan pesan dengan lebih fleksibel terhadap varian teks. Semua aturan menggunakan `new RegExp` untuk mencocokkan pola yang lebih kompleks.
-  - Memiliki fungsi `updateToggleButton()` untuk memperbarui tampilan dan status tombol toggle, dengan tampilan dan fungsi yang lebih terstruktur.
-  - Menambahkan CSS lebih kompleks untuk menangani berbagai elemen, termasuk emoji, simbol, dan karakter non-ASCII.
-  - `MutationObserver` serupa, tetapi lebih dioptimalkan untuk menangani node tambahan dengan filter yang lebih canggih.
-  - Menambahkan filter khusus untuk emoji, simbol matematika, dan tanda diakritik, yang tidak ada pada versi 1.1.
+<details>
+<summary>TEKAN UNTUK MELIHAT</summary>
 
-- v1.1
- - Menambahkan rounded pada tombol fiter.
+- **Penambahan Fitur Sembunyikan Pesan**:
+  - Menambahkan opsi untuk menyembunyikan pesan terkait promosi judi online tanpa memblokirnya sepenuhnya. Pesan yang terdeteksi akan diganti dengan teks "[PESAN DISEMBUNYIKAN]".
+  - Pesan yang disembunyikan dapat dilihat kembali dengan mengarahkan kursor (hover) pada pesan tersebut.
+
+- **Status Blokir dan Sembunyikan Terpisah**:
+  - Menambahkan variabel `isMasking` untuk mengatur status sembunyikan pesan secara terpisah dari status blokir (`isActive`).
+  - Pengguna dapat memilih untuk memblokir atau hanya menyembunyikan pesan terkait promosi judi online.
+
+- **Penyempurnaan UI Tombol Toggle**:
+  - Tombol toggle kini memiliki tiga status:
+    1. **🔇 PROMOSI JUDOL : NONAKTIF** - Filter tidak aktif, pesan tidak diblokir atau disembunyikan.
+    2. **🔇 PROMOSI JUDOL : DIBLOKIR** - Pesan terkait promosi judi online akan diblokir.
+    3. **🔇 PROMOSI JUDOL : DISEMBUNYIKAN** - Pesan terkait promosi judi online akan disembunyikan.
+  - Warna tombol menyesuaikan status:
+    - Merah: Filter nonaktif.
+    - Hijau: Pesan diblokir.
+    - Oranye: Pesan disembunyikan.
+
+- **Perbaikan Performa dan Pengamatan Elemen Chat**:
+  - Memperbaiki pemantauan elemen chat untuk mendukung lebih banyak struktur DOM YouTube yang berbeda.
+  - Mengurangi penggunaan `MutationObserver` untuk meningkatkan performa.
+
+- **Penyempurnaan CSS**:
+  - Memperbaiki CSS agar pesan yang diblokir atau disembunyikan tidak mengganggu tampilan keseluruhan chat.
+  - Warna teks untuk pesan yang disembunyikan diperbarui agar lebih mudah dikenali (oranye).
+
+- **Refaktor Kode**:
+  - Merapikan dan memperbaiki beberapa bagian kode untuk meningkatkan keterbacaan dan efisiensi.
+
+</details>
+
+### **v1.3**
+
+<details>
+<summary>TEKAN UNTUK MELIHAT</summary>
+
+- **Pembaruan Nama dan Ikon Tombol Toggle**:
+  - Nama tombol toggle diperbarui dengan menambahkan ikon emoji untuk meningkatkan visual dan kejelasan status filter.
+  - **Status Aktif**: Tombol akan menampilkan teks **"🔇 JUDOL : AKTIF"** ketika filter aktif.
+  - **Status Nonaktif**: Tombol akan menampilkan teks **"🔇 JUDOL : NONAKTIF"** ketika filter nonaktif.
+
+- **Penyesuaian Posisi dan Tampilan Tombol Toggle**:
+  - Posisi tombol toggle diubah sedikit ke kanan dengan koordinat `top: 5px; right: 95px;` agar lebih mudah diakses dan terlihat.
+  - Border-radius tombol diperhalus menjadi `8px` untuk tampilan yang lebih modern dan menarik.
+
+</details>
+
+### **v1.2**
+
+<details>
+<summary>TEKAN UNTUK MELIHAT</summary>
+
+- **Peningkatan Tipe Filter**:
+  - Menggunakan tipe `regexp` untuk semua aturan filter agar lebih fleksibel dan akurat dalam mengenali berbagai variasi teks.
+
+- **Penyempurnaan Pola Regex**:
+  - Aturan filter ditingkatkan dengan pola regex yang lebih kompleks dan canggih. Kini dapat mengenali variasi teks yang lebih rumit, seperti: "m+a4+x+w+i+n", "j+a4+c+k+p+o0+t+", "w+e+d+e", serta pola yang mengandung simbol dan angka.
+
+- **Penambahan Filter Khusus**:
+  - Menambahkan filter khusus untuk emoji, tanda baca, simbol matematika, dan karakter dengan aksara diakritik, sehingga dapat menangani lebih banyak variasi konten.
+
+- **Peningkatan Fungsi `normalizeText()`**:
+  - Fungsi `normalizeText()` lebih kuat dengan penambahan penghapusan karakter non-ASCII menggunakan `replace(/[^\p{ASCII}]/gu, "")`.
+  - Tetap menggunakan `replace(/[\u0300-\u036f]/g, "")` untuk menghapus aksara diakritik, sehingga menghasilkan teks yang lebih bersih untuk dibandingkan dengan aturan filter.
+
+- **Optimalisasi Metode `filterMessages()`**:
+  - Menggunakan `new RegExp` untuk mencocokkan pola teks yang lebih kompleks, sehingga lebih fleksibel terhadap variasi teks yang berbeda.
+
+- **Fungsi `updateToggleButton()` yang Lebih Terstruktur**:
+  - Memperbarui fungsi `updateToggleButton()` untuk memperbaiki tampilan dan status tombol toggle. Fungsi ini kini memiliki struktur yang lebih baik untuk memudahkan pemeliharaan dan pengembangan di masa depan.
+
+- **Penambahan CSS yang Lebih Kompleks**:
+  - Penambahan dan penyempurnaan aturan CSS untuk menangani berbagai elemen, termasuk emoji, simbol, dan karakter non-ASCII, agar tampilan lebih konsisten dan dapat diandalkan.
+
+- **Optimalisasi `MutationObserver`**:
+  - `MutationObserver` dioptimalkan untuk memproses node tambahan dengan filter yang lebih canggih, memungkinkan deteksi perubahan DOM yang lebih efisien.
+
+- **Penambahan Filter Emoji dan Simbol**:
+  - Menambahkan filter khusus untuk emoji, simbol matematika, dan aksara diakritik, fitur yang belum ada pada versi 1.1.
+
+</details>
+
+### **v1.1**
+
+<details>
+<summary>TEKAN UNTUK MELIHAT</summary>
+
+- **Perbaikan Tampilan Tombol**:
+  - Menambahkan gaya `border-radius` (rounded) pada tombol filter untuk tampilan yang lebih halus dan modern.
+
+</details>
+
+### **v1.0**
+
+<details>
+<summary>TEKAN UNTUK MELIHAT</summary>
+
+- **Pengenalan Fitur Pemblokiran Pesan**:
+  - Memblokir pesan yang mengandung kata kunci tertentu, seperti: `maxwin`, `jackpot`, `petir`, `zeus`, `kakek`, `gacor`, `wd`, `wede`, `depo`, `web`, dan `situs`, untuk mengurangi konten yang tidak diinginkan.
  
-- v1.0
- - Memblokir pesan yang mengandung kata kunci `maxwin`, `jackpot`, `petir`, `zeus`, `kakek`, `gacor`, `wd`, `wede`, `depo`, `web`, `situs`.
+</details>
 
 ## ⭐ Star History
 
