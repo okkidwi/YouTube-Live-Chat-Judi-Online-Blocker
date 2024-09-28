@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         YouTube Live Chat Judi Online Blocker
 // @namespace    javascript
-// @version      1.3
-// @description  Memblokir pesan yang berkaitan dengan promosi judi online (judol) di live stream YouTube
+// @version      1.4
+// @description  Blokir/sembunyikan pesan yang berkaitan dengan promosi judi online (judol) di live stream YouTube
 // @author       Okki Dwi | https://linktr.ee/okkidwi
 // @match        https://www.youtube.com/live_chat*
 // @icon         https://raw.githubusercontent.com/okkidwi/YouTube-Live-Chat-Judi-Online-Blocker/refs/heads/main/images/icon-youtube-live-chat-judi-online-blocker.png
@@ -15,8 +15,9 @@
 (function() {
     'use strict';
 
-    // Status filter aktif/tidak
-    let isActive = true;
+    // Status filter aktif/nonaktif
+    let isActive = false; // Status blokir aktif/nonaktif // true = aktif & false = nonaktif
+    let isMasking = true; // Status sembunyikan aktif/nonaktif // true = aktif & false = nonaktif
 
     // Aturan filter untuk pesan yang berhubungan dengan judi online
     const rules = [
@@ -41,7 +42,7 @@
         { type: "regexp", text: "s+\\s*l+\\s*[o0]+\\s*t+\\s*[e3]+\\s*r+" },
         { type: "regexp", text: "c+\\s*h+\\s*i+\\s*p+" },
         { type: "regexp", text: "p+\\s*a+\\s*s+\\s*[a4]+\\s*d+" },
-        { type: "regexp", text: "^[\\p{Emoji}].*[\\p{Emoji}]$" },
+        { type: "regexp", text: "^[\\p{Emoji}].*[\\p{Emoji}]$", flags: "u" },
         { type: "regexp", text: "(\\w[.,_\\-])+\\w" },
         { type: "regexp", text: "\\d{2,}.+|.+\\d{2,}" },
         { type: "regexp", text: "[\\u0300-\\u036f]+" },
@@ -56,26 +57,91 @@
             messageClass: "yt-live-chat-item-list-renderer"
         },
         ytlcb: {
-            filteredItemClass: "ytlcb-filtered-item"
+            filteredItemClass: "ytlcb-filtered-item",
+            maskedItemClass: "ytlcb-masked-item"
         }
     };
 
-    // Fungsi untuk menormalisasi teks agar filter lebih akurat
+    // Menyimpan teks asli dari pesan yang disembunyikan
+    const originalMessages = new Map();
+
+    // Menyimpan referensi fungsi event listener untuk setiap node
+    const hoverListeners = new Map();
+
+    // Menormalisasi teks agar filter lebih akurat
     const normalizeText = (text) => text.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^\p{ASCII}]/gu, "");
 
     // Filter pesan sesuai aturan yang diberikan
     const filterMessages = (nodes) => {
         nodes.forEach(node => {
-            let message = ((node.querySelector("#message") || []).textContent || "");
-            message = normalizeText(message);
+            let messageElement = node.querySelector("#message");
+            let originalMessage = messageElement ? messageElement.textContent : "";
+
+            let normalizedMessage = normalizeText(originalMessage);
 
             const matched = rules.some(rule => {
                 const regexp = new RegExp(rule.text, rule.flags || "i");
-                return regexp.test(message);
+                return regexp.test(normalizedMessage);
             });
 
             if (matched) {
-                node.classList.add(elName.ytlcb.filteredItemClass);
+                if (isMasking) {
+                    // Menyimpan pesan asli jika belum disimpan
+                    if (!originalMessages.has(node)) {
+                        originalMessages.set(node, originalMessage);
+                    }
+                    // Menyembunyikan pesan
+                    node.classList.add(elName.ytlcb.maskedItemClass);
+                    messageElement.textContent = "[PESAN DISEMBUNYIKAN]";
+
+                    // Membuat fungsi event listener
+                    const mouseOverListener = () => {
+                        if (originalMessages.has(node)) {
+                            messageElement.textContent = originalMessages.get(node);
+                        }
+                    };
+
+                    const mouseOutListener = () => {
+                        messageElement.textContent = "[PESAN DISEMBUNYIKAN]";
+                    };
+
+                    // Menambahkan event listener untuk hover
+                    node.addEventListener("mouseover", mouseOverListener);
+                    node.addEventListener("mouseout", mouseOutListener);
+
+                    // Menyimpan referensi listener untuk penghapusan nanti
+                    hoverListeners.set(node, { mouseOverListener, mouseOutListener });
+                } else {
+                    // Memblokir pesan
+                    node.classList.add(elName.ytlcb.filteredItemClass);
+                }
+            }
+        });
+    };
+
+    // Mengembalikan pesan ke teks asli saat filter dimatikan
+    const restoreMessages = (nodes) => {
+        nodes.forEach(node => {
+            if (originalMessages.has(node)) {
+                // Mengembalikan teks asli dari pesan
+                let messageElement = node.querySelector("#message");
+                if (messageElement) {
+                    messageElement.textContent = originalMessages.get(node);
+                }
+                // Menghapus class sembunyikan atau diblokir
+                node.classList.remove(elName.ytlcb.maskedItemClass);
+                node.classList.remove(elName.ytlcb.filteredItemClass);
+
+                // Menghapus event listener hover jika ada
+                if (hoverListeners.has(node)) {
+                    const { mouseOverListener, mouseOutListener } = hoverListeners.get(node);
+                    node.removeEventListener("mouseover", mouseOverListener);
+                    node.removeEventListener("mouseout", mouseOutListener);
+                    hoverListeners.delete(node);
+                }
+
+                // Menghapus pesan asli dari map
+                originalMessages.delete(node);
             }
         });
     };
@@ -83,15 +149,31 @@
     // Filter semua pesan yang ada di layar
     const filterAllMessages = () => {
         const nodes = document.querySelectorAll(`${elName.yt.messageTag}.${elName.yt.messageClass}`);
-        nodes.forEach(node => node.classList.remove(elName.ytlcb.filteredItemClass));
+        nodes.forEach(node => {
+            node.classList.remove(elName.ytlcb.filteredItemClass);
+            node.classList.remove(elName.ytlcb.maskedItemClass);
+        });
         if (isActive && rules.length !== 0) {
             filterMessages(nodes);
+        } else {
+            // Mengembalikan pesan ke teks asli jika filter dimatikan
+            restoreMessages(nodes);
         }
     };
 
-    // Fungsi untuk menambahkan tombol toggle filter
+    // Menambahkan tombol toggle diblokir dan sembunyikan
     const addToggleButton = () => {
-        const header = document.querySelector("#header-author") || document.querySelector("#chat-messages");
+        // Mencari elemen header chat. Struktur DOM YouTube bisa berubah, jadi kita coba beberapa selektor.
+        const headerSelectors = [
+            '#header-author',
+            '#chat-header',
+            '#chat-messages'
+        ];
+        let header = null;
+        for (const selector of headerSelectors) {
+            header = document.querySelector(selector);
+            if (header) break;
+        }
 
         if (header) {
             const button = document.createElement("button");
@@ -107,15 +189,22 @@
         }
     };
 
-    // Fungsi untuk memperbarui tampilan tombol toggle
+    // Memperbarui tampilan tombol toggle
     const updateToggleButton = (button) => {
-        button.textContent = isActive ? "🔇 JUDOL : AKTIF" : "🔇 JUDOL : NONAKTIF";
-        button.style.backgroundColor = isActive ? "#4CAF50" : "#f44336";
+        if (isActive) {
+            if (isMasking) {
+                button.textContent = "🔇 PROMOSI JUDOL : DISEMBUNYIKAN";
+                button.style.backgroundColor = "#FF9800";
+            } else {
+                button.textContent = "🔇 PROMOSI JUDOL : DIBLOKIR";
+                button.style.backgroundColor = "#4CAF50";
+            }
+        } else {
+            button.textContent = "🔇 PROMOSI JUDOL : NONAKTIF";
+            button.style.backgroundColor = "#f44336";
+        }
         button.style.cssText += `
-            position: absolute;
-            top: 5px;
-            right: 95px;
-            z-index: 1000;
+            position: relative;
             color: white;
             border: none;
             padding: 10px;
@@ -127,23 +216,26 @@
 
     // Inisialisasi script
     const init = () => {
-        // Menambahkan CSS untuk menyembunyikan pesan yang difilter
+        // Menambahkan CSS untuk menyembunyikan pesan yang diblokir atau disembunyikan
         const style = document.createElement("style");
         style.textContent = `
             ${elName.yt.messageTag}.${elName.ytlcb.filteredItemClass} {
                 display: none !important;
             }
+            ${elName.yt.messageTag}.${elName.ytlcb.maskedItemClass} #message {
+                color: #FF9800;
+            }
         `;
         document.head.appendChild(style);
 
         // Mengawasi perubahan pada elemen chat
-        const chatListNode = document.querySelector("#chat");
+        const chatListNode = document.querySelector("#chat") || document.querySelector("#items");
         if (chatListNode) {
             filterAllMessages();
             const chatObserver = new MutationObserver(mutations => {
                 mutations.forEach(mutation => {
                     const chatNodes = [...mutation.addedNodes].filter(node =>
-                        node.nodeType === Node.ELEMENT_NODE && node.classList.contains(elName.yt.messageClass)
+                        node.nodeType === Node.ELEMENT_NODE && node.matches(`${elName.yt.messageTag}.${elName.yt.messageClass}`)
                     );
                     filterMessages(chatNodes);
                 });
