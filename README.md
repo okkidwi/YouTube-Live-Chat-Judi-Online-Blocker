@@ -7,6 +7,7 @@
 <div align="center">
 
 #### Sebuah userscript untuk memblokir/menyembunyikan pesan yang berkaitan dengan promosi judi online (judol) di live stream YouTube
+### ⚠️ Skrip ini hanya berfungsi di viewer side (browser) Anda sendri ⚠️
 
 [![](https://img.shields.io/badge/Author-okkidwi-green.svg)](https://github.com/okkidwi)
 [![](https://img.shields.io/github/license/okkidwi/YouTube-Live-Chat-Judi-Online-Blocker?color=blue)](https://github.com/okkidwi/YouTube-Live-Chat-Judi-Online-Blocker/blob/main/LICENSE)
