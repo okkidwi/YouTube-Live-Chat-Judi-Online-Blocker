@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         YouTube Live Chat Judi Online Blocker
 // @namespace    javascript
-// @version      1.4
+// @version      1.5
 // @description  Blokir/sembunyikan pesan yang berkaitan dengan promosi judi online (judol) di live stream YouTube
 // @author       Okki Dwi | https://linktr.ee/okkidwi
 // @match        https://www.youtube.com/live_chat*
@@ -16,8 +16,11 @@
     'use strict';
 
     // Status filter aktif/nonaktif
-    let isActive = false; // Status blokir aktif/nonaktif // true = aktif & false = nonaktif
-    let isMasking = true; // Status sembunyikan aktif/nonaktif // true = aktif & false = nonaktif
+    let isBlocking = false; // Status fungsi blokir pesan aktif/nonaktif // true = aktif & false = nonaktif
+    let isMasking = true; // Status fungsi sembunyikan pesan aktif/nonaktif // true = aktif & false = nonaktif
+
+    // Status timestamp aktif/nonaktif
+    let isTimestamp = true; // Status fungsi timestamp pesan aktif/nonaktif // true = aktif, false = nonaktif
 
     // Aturan filter untuk pesan yang berhubungan dengan judi online
     const rules = [
@@ -68,14 +71,39 @@
     // Menyimpan referensi fungsi event listener untuk setiap node
     const hoverListeners = new Map();
 
+    // Menghasilkan timestamp dalam format 24 jam
+    const generateTimestamp24 = () => {
+        const now = new Date();
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        return `${hours}:${minutes}:${seconds}`;
+    };
+
     // Menormalisasi teks agar filter lebih akurat
     const normalizeText = (text) => text.normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^\p{ASCII}]/gu, "");
+
+    // Menambahkan timestamp ke setiap pesan jika timestamp diaktifkan
+    const appendTimestamp = (messageElement, timestamp) => {
+        if (!isTimestamp) return; // Jika timestamp dinonaktifkan, akan dihentikan
+        if (messageElement.querySelector('.ytlcb-timestamp')) return; // Mencegah duplikasi
+
+        const timestampSpan = document.createElement('span');
+        timestampSpan.textContent = ` [${timestamp}]`;
+        timestampSpan.style.fontSize = '12px';
+        timestampSpan.style.color = 'gray';
+        timestampSpan.style.marginLeft = '8px';
+        timestampSpan.classList.add('ytlcb-timestamp');
+        messageElement.appendChild(timestampSpan);
+    };
 
     // Filter pesan sesuai aturan yang diberikan
     const filterMessages = (nodes) => {
         nodes.forEach(node => {
             let messageElement = node.querySelector("#message");
-            let originalMessage = messageElement ? messageElement.textContent : "";
+            if (!messageElement) return;
+
+            let originalMessage = messageElement.textContent;
 
             let normalizedMessage = normalizeText(originalMessage);
 
@@ -94,15 +122,21 @@
                     node.classList.add(elName.ytlcb.maskedItemClass);
                     messageElement.textContent = "[PESAN DISEMBUNYIKAN]";
 
+                    // Menambahkan timestamp setelah pesan disembunyikan
+                    const timestamp = generateTimestamp24();
+                    appendTimestamp(messageElement, timestamp);
+
                     // Membuat fungsi event listener
                     const mouseOverListener = () => {
                         if (originalMessages.has(node)) {
                             messageElement.textContent = originalMessages.get(node);
+                            appendTimestamp(messageElement, timestamp);
                         }
                     };
 
                     const mouseOutListener = () => {
                         messageElement.textContent = "[PESAN DISEMBUNYIKAN]";
+                        appendTimestamp(messageElement, timestamp);
                     };
 
                     // Menambahkan event listener untuk hover
@@ -115,6 +149,10 @@
                     // Memblokir pesan
                     node.classList.add(elName.ytlcb.filteredItemClass);
                 }
+            } else {
+                // Menambahkan timestamp ke pesan yang tidak diblokir
+                const timestamp = generateTimestamp24();
+                appendTimestamp(messageElement, timestamp);
             }
         });
     };
@@ -143,6 +181,15 @@
                 // Menghapus pesan asli dari map
                 originalMessages.delete(node);
             }
+
+            // Menghapus timestamp jika ada
+            let messageElement = node.querySelector("#message");
+            if (messageElement) {
+                const timestampSpan = messageElement.querySelector('.ytlcb-timestamp');
+                if (timestampSpan) {
+                    timestampSpan.remove();
+                }
+            }
         });
     };
 
@@ -152,8 +199,17 @@
         nodes.forEach(node => {
             node.classList.remove(elName.ytlcb.filteredItemClass);
             node.classList.remove(elName.ytlcb.maskedItemClass);
+
+            // Menghapus timestamp jika ada
+            let messageElement = node.querySelector("#message");
+            if (messageElement) {
+                const timestampSpan = messageElement.querySelector('.ytlcb-timestamp');
+                if (timestampSpan) {
+                    timestampSpan.remove();
+                }
+            }
         });
-        if (isActive && rules.length !== 0) {
+        if (isBlocking && rules.length !== 0) {
             filterMessages(nodes);
         } else {
             // Mengembalikan pesan ke teks asli jika filter dimatikan
@@ -161,7 +217,7 @@
         }
     };
 
-    // Menambahkan tombol toggle diblokir dan sembunyikan
+    // Menambahkan tombol toggle untuk mengaktifkan/menonaktifkan
     const addToggleButton = () => {
         // Mencari elemen header chat. Struktur DOM YouTube bisa berubah, jadi kita coba beberapa selektor.
         const headerSelectors = [
@@ -180,7 +236,7 @@
             updateToggleButton(button);
 
             button.addEventListener('click', () => {
-                isActive = !isActive;
+                isBlocking = !isBlocking;
                 updateToggleButton(button);
                 filterAllMessages();
             });
@@ -191,7 +247,7 @@
 
     // Memperbarui tampilan tombol toggle
     const updateToggleButton = (button) => {
-        if (isActive) {
+        if (isBlocking) {
             if (isMasking) {
                 button.textContent = "🔇 PROMOSI JUDOL : DISEMBUNYIKAN";
                 button.style.backgroundColor = "#FF9800";
@@ -214,7 +270,7 @@
         `;
     };
 
-    // Inisialisasi script
+    // Inisialisasi Skrip
     const init = () => {
         // Menambahkan CSS untuk menyembunyikan pesan yang diblokir atau disembunyikan
         const style = document.createElement("style");
@@ -224,6 +280,11 @@
             }
             ${elName.yt.messageTag}.${elName.ytlcb.maskedItemClass} #message {
                 color: #FF9800;
+            }
+            .ytlcb-timestamp {
+                font-size: 12px;
+                color: gray;
+                margin-left: 8px;
             }
         `;
         document.head.appendChild(style);
