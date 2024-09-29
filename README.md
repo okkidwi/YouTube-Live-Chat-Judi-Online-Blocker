@@ -7,7 +7,7 @@
 <div align="center">
 
 #### Sebuah userscript untuk memblokir/menyembunyikan pesan yang berkaitan dengan promosi judi online (judol) di live stream YouTube
-### ⚠️ Skrip ini hanya berfungsi di viewer side (browser) Anda sendri ⚠️
+### ⚠️ Skrip ini hanya berfungsi di viewer side (browser) Anda sendri
 
 [![](https://img.shields.io/badge/Author-okkidwi-green.svg)](https://github.com/okkidwi)
 [![](https://img.shields.io/github/license/okkidwi/YouTube-Live-Chat-Judi-Online-Blocker?color=blue)](https://github.com/okkidwi/YouTube-Live-Chat-Judi-Online-Blocker/blob/main/LICENSE)
@@ -74,6 +74,24 @@ https://github.com/user-attachments/assets/54d1fadb-9b17-437f-973c-d5324972dde7
 
 ## 📜 Riwayat Perubahan
 
+### **v1.5**
+
+<details>
+<summary>TEKAN UNTUK MELIHAT</summary>
+
+- **Peningkatan Interaksi Tombol**:
+   - Mengubah nama flag `isActive` menjadi `isBlocking` agar lebih sesuai
+
+- **Penambahan Fitur Timestamp**:
+   - Menambahkan kemampuan untuk menampilkan timestamp melalui fungsi `generateTimestamp24()` pada setiap pesan di live chat dalam format 24 jam (HH:MM:SS) dan fungsi `appendTimestamp`. Fitur ini dapat diaktifkan atau dinonaktifkan melalui flag `isTimestamp`.
+   - Timestamp akan ditambahkan baik pada pesan yang diblokir maupun pesan yang terlihat untuk memberikan konteks lebih baik selama live streaming.
+
+- **Optimisasi Filter dan Tampilan**:
+  - **Penggunaan `MutationObserver`** dioptimalkan untuk memantau perubahan di live chat, memastikan bahwa pesan yang baru masuk difilter secara efisien.
+  - **CSS diperbarui** untuk mendukung tampilan pesan yang disembunyikan dan menampilkan pesan dengan warna serta format yang berbeda.
+  
+</details>
+
 ### **v1.4**
 
 <details>
@@ -84,7 +102,7 @@ https://github.com/user-attachments/assets/54d1fadb-9b17-437f-973c-d5324972dde7
   - Pesan yang disembunyikan dapat dilihat kembali dengan mengarahkan kursor (hover) pada pesan tersebut.
 
 - **Status Blokir dan Sembunyikan Terpisah**:
-  - Menambahkan variabel `isMasking` untuk mengatur status sembunyikan pesan secara terpisah dari status blokir (`isActive`).
+  - Menambahkan flag `isMasking` untuk mengatur status sembunyikan pesan secara terpisah dari status blokir (`isActive`).
   - Pengguna dapat memilih untuk memblokir atau hanya menyembunyikan pesan terkait promosi judi online.
 
 - **Penyempurnaan UI Tombol Toggle**:
