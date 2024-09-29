@@ -38,7 +38,7 @@
 
 1. Instal ekstensi <a href="https://www.tampermonkey.net/index.php" target="_blank">Tampermonkey</a>
 2. Instal userscript <a href="https://update.greasyfork.org/scripts/510410/YouTube%20Live%20Chat%20Judi%20Online%20Blocker.user.js" target="_blank">YouTube Live Chat Judi Online Blocker</a> (akan dimuat secara otomatis di pengelola skrip pengguna)
-3. Buka ekstensi Tampermonkey melalui tombol Ekstensions browser> Klik Dashboard > Klik YouTube Live Chat Judi Online Blocker > Cari baris kode 19 & 20 > Atur filter yang Anda inginkan
+3. Buka ekstensi Tampermonkey melalui tombol Ekstensions browser> Klik Dashboard > Klik YouTube Live Chat Judi Online Blocker > Cari baris kode 19, 20, dan 23 > Atur status filter & timestamp yang Anda inginkan
 
 https://github.com/user-attachments/assets/54d1fadb-9b17-437f-973c-d5324972dde7
 
