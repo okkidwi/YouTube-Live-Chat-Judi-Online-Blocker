@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         YouTube Live Chat Judi Online Blocker
 // @namespace    javascript
-// @version      1.5
+// @version      1.6
 // @description  Blokir/sembunyikan pesan yang berkaitan dengan promosi judi online (judol) di live stream YouTube
 // @author       Okki Dwi | https://linktr.ee/okkidwi
 // @match        https://www.youtube.com/live_chat*
@@ -298,7 +298,9 @@
                     const chatNodes = [...mutation.addedNodes].filter(node =>
                         node.nodeType === Node.ELEMENT_NODE && node.matches(`${elName.yt.messageTag}.${elName.yt.messageClass}`)
                     );
-                    filterMessages(chatNodes);
+                    if (isBlocking && rules.length !== 0) {
+                        filterMessages(chatNodes);
+                    }
                 });
             });
             chatObserver.observe(chatListNode, { childList: true, subtree: true });
