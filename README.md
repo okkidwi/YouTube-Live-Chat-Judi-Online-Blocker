@@ -74,6 +74,16 @@ https://github.com/user-attachments/assets/54d1fadb-9b17-437f-973c-d5324972dde7
 
 ## 📜 Riwayat Perubahan
 
+### **v1.6**
+
+<details>
+<summary>TEKAN UNTUK MELIHAT</summary>
+
+- **Perbaikan Bug**:
+   - Memperbaiki bug pada fungsi flag `isMasking` yang aktif ketika tombol toggle nonaktif
+
+</details>
+
 ### **v1.5**
 
 <details>
